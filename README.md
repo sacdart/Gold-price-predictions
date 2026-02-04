@@ -117,12 +117,12 @@ All models are evaluated using:
 ## 📝 Requirements
 
 ```
-pandas==2.0.3
-numpy==1.24.3
-matplotlib==3.7.2
-seaborn==0.12.2
-scikit-learn==1.3.0
-tensorflow==2.13.0
+pandas>=1.5.0
+numpy>=1.23.0
+matplotlib>=3.6.0
+seaborn>=0.12.0
+scikit-learn>=1.2.0
+tensorflow>=2.12.0
 ```
 
 ## 🤝 Contributing

@@ -26,6 +26,10 @@ class GoldPriceAnalyzer:
     A comprehensive class for analyzing and forecasting gold prices.
     """
     
+    # Define feature columns as class constant
+    FEATURE_COLS = ['Lag_1', 'Lag_2', 'Lag_3', 'Lag_4', 'Lag_5', 
+                    'MA_30', 'MA_90', 'Rolling_Mean_7', 'Rolling_Std_7', 'Rolling_Mean_14']
+    
     def __init__(self, data_path):
         """
         Initialize the analyzer with data path.
@@ -141,11 +145,8 @@ class GoldPriceAnalyzer:
         """Prepare data for machine learning models."""
         print("\nPreparing data for modeling...")
         
-        # Select features for modeling
-        feature_cols = ['Lag_1', 'Lag_2', 'Lag_3', 'Lag_4', 'Lag_5', 
-                       'MA_30', 'MA_90', 'Rolling_Mean_7', 'Rolling_Std_7', 'Rolling_Mean_14']
-        
-        X = self.data[feature_cols].values
+        # Use class constant for feature columns
+        X = self.data[self.FEATURE_COLS].values
         y = self.data['Price'].values
         
         # Split the data (80-20 split)
@@ -216,11 +217,9 @@ class GoldPriceAnalyzer:
         print(f"Training R²: {train_r2:.4f}")
         print(f"Test R²: {test_r2:.4f}")
         
-        # Feature importance
-        feature_cols = ['Lag_1', 'Lag_2', 'Lag_3', 'Lag_4', 'Lag_5', 
-                       'MA_30', 'MA_90', 'Rolling_Mean_7', 'Rolling_Std_7', 'Rolling_Mean_14']
+        # Feature importance - use class constant
         feature_importance = pd.DataFrame({
-            'Feature': feature_cols,
+            'Feature': self.FEATURE_COLS,
             'Importance': model.feature_importances_
         }).sort_values('Importance', ascending=False)
         
@@ -277,9 +276,9 @@ class GoldPriceAnalyzer:
         model.compile(optimizer='adam', loss='mean_squared_error')
         
         print("Training LSTM model...")
-        # Train model
-        history = model.fit(X_train, y_train, batch_size=32, epochs=20, 
-                          validation_split=0.1, verbose=0)
+        # Train model (store history for potential future use)
+        _ = model.fit(X_train, y_train, batch_size=32, epochs=20, 
+                      validation_split=0.1, verbose=0)
         
         # Predictions
         y_pred_train = model.predict(X_train, verbose=0)
